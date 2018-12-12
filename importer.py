@@ -43,7 +43,7 @@ with open(filename) as f:
 print("Building graph finished successfully!")
 
 print("Data relative to Graph G named: " + str( os.path.basename( filename ) ) )
-
+"""
 #Ottengo numero totale nodi
 tot_nodes = G.number_of_nodes()
 
@@ -52,12 +52,40 @@ tot_edges = G.number_of_edges()
 
 total_connections = ( tot_nodes * ( tot_nodes - 1 ) )/2
 
-#Ottengo
+#Ottengo densità Grafo G
 density = tot_edges/total_connections
 
-print(" Total nodes:  " + str( tot_nodes ) )
+max_node_degree = None
+node_degree_sum = 0
+
+print("Calculating maximum degree..")
+
+for node in G.nodes():
+
+    #Ottengo grado nodo i-esimo
+    tmp_degree = G.degree( node )
+
+    #Verifico che non si siano verificati errori
+    if( tmp_degree is not None ):
+
+        node_degree_sum += tmp_degree
+
+        if( max_node_degree is None ):
+            max_node_degree = tmp_degree
+        elif( tmp_degree > max_node_degree ):
+            max_node_degree = tmp_degree
+            print("Found new maximum degree: " + str( tmp_degree ))
+
+
+average_degree = node_degree_sum/tot_nodes"""
+degree_assortativity_coefficient = nx.degree_assortativity_coefficient(G)
+
+"""print(" Total nodes:  " + str( tot_nodes ) )
 print(" Total edges:  " + str( tot_edges ) )
 print(" Density:  " + str( density ) )
+print(" Maximum degree: " + str( max_node_degree ) )
+print(" Average degree: " + str( average_degree ) )"""
+print(" Degree assortativity coefficient: " + str( degree_assortativity_coefficient ) )
 
 """print("Drawing graph..")
 
