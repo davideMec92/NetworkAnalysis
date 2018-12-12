@@ -4,7 +4,7 @@ import utils.file as uf
 import os
 
 #Creazione Grafo G
-G = nx.DiGraph()
+G = nx.Graph()
 
 #Directory database grafi
 source_dir = "Networks"
@@ -33,17 +33,29 @@ with open(filename) as f:
 
         if line[0] != "#":
 
-            nodes = line.split(" ")
-            G.add_edge(nodes[0], nodes[1])
+            nodes = line.split( separator )
+
+            #Verifico che il nodo u non esista già nel grafo G
+            if( G.has_node( nodes[0] ) == False ):
+                G.add_node( nodes[0] )
+
+            #Verifico che il nodo v non esista già nel grafo G
+            if( G.has_node( nodes[1] ) == False ):
+                G.add_node( nodes[1] )
+
+            #Verifico che l'edge (u,v) non esista già nel grafo G
+            if( G.has_edge( nodes[0], nodes[1] ) == False ):
+                G.add_edge(nodes[0], nodes[1])
+
             #print( "Nodo 1: " + str(nodes[0]) + "\n")
             #print( "Nodo 2: " + str(nodes[1]) + "\n")
 
         reading_line = reading_line + 1
 
-print("Building graph finished successfully!")
+print("Building graph finished successfully! \n")
 
 print("Data relative to Graph G named: " + str( os.path.basename( filename ) ) )
-"""
+
 #Ottengo numero totale nodi
 tot_nodes = G.number_of_nodes()
 
@@ -77,15 +89,30 @@ for node in G.nodes():
             print("Found new maximum degree: " + str( tmp_degree ))
 
 
-average_degree = node_degree_sum/tot_nodes"""
-degree_assortativity_coefficient = nx.degree_assortativity_coefficient(G)
+average_degree = node_degree_sum/tot_nodes
 
-"""print(" Total nodes:  " + str( tot_nodes ) )
+
+print( "dict: " + str( list(nx.enumerate_all_cliques(G).values()) ) )
+
+print("Calculating total triangles..")
+triangles_dict = nx.triangles( G )
+tot_triangles = 0
+#tot_triangles = [c for c in nx.cycle_basis(G) if len(c)==3]
+
+
+for node_key in triangles_dict:
+    tot_triangles += triangles_dict[node_key]
+
+#degree_assortativity_coefficient = nx.degree_assortativity_coefficient(G)
+
+print(" Total nodes:  " + str( tot_nodes ) )
 print(" Total edges:  " + str( tot_edges ) )
 print(" Density:  " + str( density ) )
 print(" Maximum degree: " + str( max_node_degree ) )
-print(" Average degree: " + str( average_degree ) )"""
-print(" Degree assortativity coefficient: " + str( degree_assortativity_coefficient ) )
+print(" Average degree: " + str( average_degree ) )
+print(" Number of triangles: " + str( tot_triangles ) )
+
+#print(" Degree assortativity coefficient: " + str( degree_assortativity_coefficient ) )
 
 """print("Drawing graph..")
 
