@@ -10,10 +10,13 @@ G = nx.Graph()
 source_dir = "Networks"
 
 #Nome con estensione del file sorgente
-filename = source_dir + "/soc-academia/soc-academia.txt"
+#filename = source_dir + "/soc-academia/soc-academia.txt"
+#filename = source_dir + "/socfb-A-anon/socfb-A-anon.txt"
+#filename = source_dir + "/socfb-UCF52/socfb-UCF52.txt"
+filename = source_dir + "/soc-youtube-growth/youtube.txt"
 
 #Separatore nodi file di input grafo G
-separator = " ";
+separator = "	";
 
 #Ottengo lunghezza file
 file_lenght = uf.file_len( filename )
@@ -35,8 +38,12 @@ with open(filename) as f:
 
             nodes = line.split( separator )
 
+            G.add_node( nodes[0] )
+            G.add_node( nodes[1] )
+            G.add_edge(nodes[0], nodes[1])
+
             #Verifico che il nodo u non esista già nel grafo G
-            if( G.has_node( nodes[0] ) == False ):
+            """if( G.has_node( nodes[0] ) == False ):
                 G.add_node( nodes[0] )
 
             #Verifico che il nodo v non esista già nel grafo G
@@ -45,7 +52,7 @@ with open(filename) as f:
 
             #Verifico che l'edge (u,v) non esista già nel grafo G
             if( G.has_edge( nodes[0], nodes[1] ) == False ):
-                G.add_edge(nodes[0], nodes[1])
+                G.add_edge(nodes[0], nodes[1])"""
 
             #print( "Nodo 1: " + str(nodes[0]) + "\n")
             #print( "Nodo 2: " + str(nodes[1]) + "\n")
@@ -91,19 +98,72 @@ for node in G.nodes():
 
 average_degree = node_degree_sum/tot_nodes
 
+tot_triangles = 0
 
-print( "dict: " + str( list(nx.enumerate_all_cliques(G).values()) ) )
+triangles_search_count = 1
+
+#Analizzo i nodi del Grafo G
+"""for node in G.nodes():
+
+    #Ottengo cliques nodo
+    node_cliques = nx.cliques_containing_node(G, node)
+
+    print("\nRicerca triangoli per nodo : " + str(node) + " - " + str( triangles_search_count ) + "/" + str( tot_nodes ) + " \n")
+
+    #Ricerca cliques per nodo analizzato
+    for i,j in node_cliques:
+
+        search_clique_node = None
+
+        if( i != node ):
+            search_clique_node = i
+        elif( j != node ):
+            search_clique_node = j
+
+        #print("Clique trovato i: " + str(i) + ", j: " + str(j) + "\n" )
+
+        #Ricerca di un eventuale edge tra i nodi connessi al nodo analizzato
+        for k,q in node_cliques:
+
+            #In caso di ricerca sullo stesso nodo passo al prossimo
+            if( k == search_clique_node or q == search_clique_node ):
+                continue
+
+            #print("Ricerca edge per nodo: " + str(search_clique_node) + "\n")
+
+            search_edge_node = None
+
+            if( k != node ):
+                search_edge_node = k
+            elif( q != node ):
+                search_edge_node = q
+
+            if( G.has_edge( search_clique_node, search_edge_node ) == True ):
+                print( "Trovato triangolo tra i vertici: " + str( node ) + ", " + str( search_clique_node ) + ", " + str( search_edge_node ) )
+                tot_triangles = tot_triangles + 1
+            #else:
+                #print( "Nessun edge presente tra: " + str( search_clique_node ) + ", " + str(search_edge_node) )
+
+    print("Triangoli totali trovati: " + str( tot_triangles ) )
+    triangles_search_count = triangles_search_count + 1"""
+
+
+#print('dict: ' + str(list(nx.enumerate_all_cliques(G))) )
 
 print("Calculating total triangles..")
-triangles_dict = nx.triangles( G )
+#triangles_dict = nx.triangles( G )
 tot_triangles = 0
 #tot_triangles = [c for c in nx.cycle_basis(G) if len(c)==3]
 
+for node in G.nodes():
+    tot_triangles = tot_triangles + nx.triangles(G,node)
 
-for node_key in triangles_dict:
-    tot_triangles += triangles_dict[node_key]
+"""for node_key in triangles_dict:
+    print( "Entro qui" )
+    tot_triangles += triangles_dict[node_key]"""
 
 #degree_assortativity_coefficient = nx.degree_assortativity_coefficient(G)
+avg_clustering_coefficient = nx.average_clustering(G)
 
 print(" Total nodes:  " + str( tot_nodes ) )
 print(" Total edges:  " + str( tot_edges ) )
@@ -111,6 +171,7 @@ print(" Density:  " + str( density ) )
 print(" Maximum degree: " + str( max_node_degree ) )
 print(" Average degree: " + str( average_degree ) )
 print(" Number of triangles: " + str( tot_triangles ) )
+print(" Average cluestering coefficient: " + str( avg_clustering_coefficient ) )
 
 #print(" Degree assortativity coefficient: " + str( degree_assortativity_coefficient ) )
 
