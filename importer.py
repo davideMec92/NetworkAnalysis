@@ -2,6 +2,7 @@ import networkx as nx
 import utils.file as uf
 #import matplotlib.pyplot as plt
 import os
+import re
 
 #Creazione Grafo G
 G = nx.Graph()
@@ -10,13 +11,15 @@ G = nx.Graph()
 source_dir = "Networks"
 
 #Nome con estensione del file sorgente
-#filename = source_dir + "/soc-academia/soc-academia.txt"
+filename = source_dir + "/soc-academia/soc-academia.txt"
 #filename = source_dir + "/socfb-A-anon/socfb-A-anon.txt"
 #filename = source_dir + "/socfb-UCF52/socfb-UCF52.txt"
-filename = source_dir + "/soc-youtube-growth/youtube.txt"
+#filename = source_dir + "/soc-youtube-growth/youtube.txt"
+#filename = source_dir + "/wiki-vote/Wiki-Vote.txt"
 
 #Separatore nodi file di input grafo G
-separator = "	";
+separator = " ";
+#separator = "	";
 
 #Ottengo lunghezza file
 file_lenght = uf.file_len( filename )
@@ -38,21 +41,21 @@ with open(filename) as f:
 
             nodes = line.split( separator )
 
-            G.add_node( nodes[0] )
-            G.add_node( nodes[1] )
-            G.add_edge(nodes[0], nodes[1])
+            node_i = re.findall("\d+", nodes[0])[0]
+            node_j = re.findall("\d+", nodes[1])[0]
 
             #Verifico che il nodo u non esista già nel grafo G
-            """if( G.has_node( nodes[0] ) == False ):
-                G.add_node( nodes[0] )
+            if( G.has_node( node_i ) == False ):
+                G.add_node( node_i )
 
             #Verifico che il nodo v non esista già nel grafo G
-            if( G.has_node( nodes[1] ) == False ):
-                G.add_node( nodes[1] )
+            if( G.has_node( node_j ) == False ):
+                G.add_node( node_j )
 
             #Verifico che l'edge (u,v) non esista già nel grafo G
-            if( G.has_edge( nodes[0], nodes[1] ) == False ):
-                G.add_edge(nodes[0], nodes[1])"""
+            if( G.has_edge( node_i, node_j ) == False ):
+                edge = (node_i, node_j)
+                G.add_edge( *edge )
 
             #print( "Nodo 1: " + str(nodes[0]) + "\n")
             #print( "Nodo 2: " + str(nodes[1]) + "\n")
@@ -151,7 +154,13 @@ triangles_search_count = 1
 #print('dict: ' + str(list(nx.enumerate_all_cliques(G))) )
 
 print("Calculating total triangles..")
-#triangles_dict = nx.triangles( G )
+"""triangles_dict = nx.triangles( G )
+
+print("dict: " + str(triangles_dict))
+
+for node, n_triangles in triangles_dict:
+    print("Nodo: " + str(node) + " - Triangoli: " + str(n_triangles))"""
+
 tot_triangles = 0
 #tot_triangles = [c for c in nx.cycle_basis(G) if len(c)==3]
 
@@ -161,6 +170,15 @@ for node in G.nodes():
 """for node_key in triangles_dict:
     print( "Entro qui" )
     tot_triangles += triangles_dict[node_key]"""
+
+#A = nx.convert.to_dict_of_dicts( G )
+#B = nx.adjacency_matrix(G)
+#nx.write_adjlist(G,"test.adjlist")
+#print("adjacency_matrix: " + str(A))
+#f = open("adjacency_matrix.txt", "w")
+#f.write(str(A))
+
+print(" Total triangles: " + str( tot_triangles ))
 
 #degree_assortativity_coefficient = nx.degree_assortativity_coefficient(G)
 avg_clustering_coefficient = nx.average_clustering(G)
