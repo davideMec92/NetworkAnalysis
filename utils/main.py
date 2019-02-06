@@ -156,6 +156,11 @@ def branching(graph, cur_max_clique_len):
 def bb_maximum_clique(graph):
     max_clique = greedy_clique_heuristic(graph)
     chromatic_number = greedy_coloring_heuristic(graph)
+
+    print("Lower bound: " + str(max_clique))
+
+    print("Upper bound: " + str(chromatic_number))
+
     if len(max_clique) == chromatic_number:
         return max_clique
     else:

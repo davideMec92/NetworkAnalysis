@@ -4,7 +4,7 @@ import utils.file as uf
 import os
 import re
 import sys
-import utils.max_clique.main as max_clique_algorithm
+import utils.main as max_clique_algorithm
 
 #Creazione Grafo G
 G = nx.Graph()
@@ -15,10 +15,11 @@ source_dir = "Networks"
 #Nome con estensione del file sorgente
 #filename = source_dir + "/soc-academia/soc-academia.txt"
 #filename = source_dir + "/socfb-A-anon/socfb-A-anon.txt"
-#filename = source_dir + "/socfb-UCF52/socfb-UCF52.txt" #OK
+filename = source_dir + "/socfb-UCF52/socfb-UCF52.txt" #OK
 #filename = source_dir + "/soc-youtube-growth/youtube.txt"
 #filename = source_dir + "/soc-twitter-follows/soc-twitter-follows.txt" #OK
-filename = source_dir + "/ca-AstroPh/ca-AstroPh.txt"#OK
+#filename = source_dir + "/ca-AstroPh/ca-AstroPh.txt"#OK
+#filename = source_dir + "/ca-netscience/ca-netscience.txt"
 #filename = source_dir + "/wiki-vote/Wiki-Vote.txt"
 
 #Separatore nodi file di input grafo G
@@ -70,11 +71,11 @@ with open(filename) as f:
 print("Building graph finished successfully! \n")
 
 #'test' : source_dir + '/output'
-args = { 'path': filename, 'time' : 10000, 'graph' : G }
+"""args = { 'path': filename, 'time' : 1000000, 'graph' : G }
 
 max_clique_algorithm.start_maximum_clique_calc( args )
 
-sys.exit("Uscita programmata")
+sys.exit("Uscita programmata")"""
 
 print("Data relative to Graph G named: " + str( os.path.basename( filename ) ) )
 
@@ -176,8 +177,19 @@ print("Calculating total triangles..")
 
 #tot_triangles = [c for c in nx.cycle_basis(G) if len(c)==3]
 
+"""for node in G.nodes():
+    tot_triangles += nx.triangles(G,node)"""
+
+maximum_clique = None
+max_clique_len = 0
+
 for node in G.nodes():
-    tot_triangles += nx.triangles(G,node)
+    tmp_maximum_clique = nx.number_of_cliques(G,node)
+
+    if tmp_maximum_clique != None and tmp_maximum_clique > max_clique_len:
+        max_clique_len = tmp_maximum_clique
+
+print( "max_clique_len: " + str( max_clique_len ) )
 
 """for node_key in triangles_dict:
     print( "Entro qui" )
