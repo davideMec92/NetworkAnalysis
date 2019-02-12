@@ -6,6 +6,7 @@ import re
 import sys
 import utils.main as max_clique_algorithm
 import utils.mail as mailUtils
+from time import gmtime, strftime
 
 #Creazione Grafo G
 G = nx.Graph()
@@ -13,13 +14,19 @@ G = nx.Graph()
 #Directory database grafi
 source_dir = "Networks"
 
+output_log_dir = "log"
+
+now = strftime("%Y_%m_%d_%H_%M_%S", gmtime())
+
 #Nome con estensione del file sorgente
 #filename = source_dir + "/soc-academia/soc-academia.txt"
 #filename = source_dir + "/socfb-A-anon/socfb-A-anon.txt"
-#filename = source_dir + "/socfb-UCF52/socfb-UCF52.txt" #OK
+filename = source_dir + "/socfb-UCF52/socfb-UCF52.txt" #OK
 #filename = source_dir + "/soc-youtube-growth/youtube.txt"
+
 #filename = source_dir + "/soc-twitter-follows/soc-twitter-follows.txt" #OK
-filename = source_dir + "/ca-AstroPh/ca-AstroPh.txt"#OK
+
+#filename = source_dir + "/ca-AstroPh/ca-AstroPh.txt"#OK
 #filename = source_dir + "/ca-netscience/ca-netscience.txt"
 #filename = source_dir + "/wiki-vote/Wiki-Vote.txt"
 
@@ -31,8 +38,12 @@ separator = " ";
 #Ottengo lunghezza file
 file_lenght = uf.file_len( filename )
 
+output_file_log = open( output_log_dir + "/" + str( os.path.basename( filename ).split(".")[0] + "_" + now + ".log" ), "w")
+
 reading_line = 1
 progress = ""
+
+output_file_log.write( "Starting building graph G.. at " + str( now ) + " \n" )
 
 #Lettura file sorgente
 with open(filename) as f:
@@ -41,7 +52,7 @@ with open(filename) as f:
 
         # Get reading progress percentage
         progress_percentage = (100 * reading_line)/file_lenght
-
+        
         print("Progress: " + str(progress) + " " + str( reading_line ) + "/" + str(file_lenght) + " " + str(int(progress_percentage)) + "%")
 
         if line[0] != "#":
@@ -69,6 +80,9 @@ with open(filename) as f:
 
         reading_line = reading_line + 1
 
+        
+output_file_log.write("Building graph G finished successfully! \n")
+        
 print("Building graph finished successfully! \n")
 
 #'test' : source_dir + '/output'
@@ -77,6 +91,8 @@ print("Building graph finished successfully! \n")
 max_clique_algorithm.start_maximum_clique_calc( args )
 
 sys.exit("Uscita programmata")"""
+
+output_file_log.write("Data relative to Graph G named: " + str( os.path.basename( filename ) ) + "\n" )
 
 print("Data relative to Graph G named: " + str( os.path.basename( filename ) ) )
 
@@ -178,8 +194,8 @@ print("Calculating total triangles..")
 
 #tot_triangles = [c for c in nx.cycle_basis(G) if len(c)==3]
 
-"""for node in G.nodes():
-    tot_triangles += nx.triangles(G,node)"""
+for node in G.nodes():
+    tot_triangles += nx.triangles(G,node)
 
 maximum_clique = None
 max_clique_len = 0
@@ -190,7 +206,7 @@ for node in G.nodes():
     if tmp_maximum_clique != None and tmp_maximum_clique > max_clique_len:
         max_clique_len = tmp_maximum_clique
 
-print( "max_clique_len: " + str( max_clique_len ) )
+#print( "max_clique_len: " + str( max_clique_len ) )
 
 """for node_key in triangles_dict:
     print( "Entro qui" )
@@ -220,6 +236,23 @@ print(" Degree assortativity coefficient: " + str( degree_assortativity_coeffici
 print(" Average triangles formed by a edge: " + str( triangles_formed_by_a_edge ) )
 print(" Maximum k-core number: " + str( nx.number_of_nodes(maximum_k_core_number )) )
 print(" Maximal clique: " + str(graph_maximal_clique))
+
+#Write results to log file
+output_file_log.write(" Total nodes:  " + str( tot_nodes ) + "\n" )
+output_file_log.write(" Total edges:  " + str( tot_edges ) + "\n" )
+output_file_log.write(" Density:  " + str( density ) + "\n" )
+output_file_log.write(" Maximum degree: " + str( max_node_degree ) + "\n" )
+output_file_log.write(" Average degree: " + str( average_degree ) + "\n" )
+output_file_log.write(" Number of triangles: " + str( tot_triangles ) + "\n" )
+output_file_log.write(" Average clustering coefficient: " + str( avg_clustering_coefficient ) + "\n" )
+output_file_log.write(" Degree assortativity coefficient: " + str( degree_assortativity_coefficient ) + "\n" )
+output_file_log.write(" Average triangles formed by a edge: " + str( triangles_formed_by_a_edge ) + "\n" )
+output_file_log.write(" Maximum k-core number: " + str( nx.number_of_nodes(maximum_k_core_number )) + "\n" )
+output_file_log.write(" Maximal clique: " + str(graph_maximal_clique) + "\n" )
+
+now = strftime("%Y_%m_%d_%H_%M_%S", gmtime())
+
+output_file_log.write("Task completed successfully at " + str( now ) + "\n" )
 
 mailUtils.sendMailToDavide( "Testo di prova" )
 
