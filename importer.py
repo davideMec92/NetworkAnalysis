@@ -5,6 +5,7 @@ import os
 import re
 import sys
 import utils.main as max_clique_algorithm
+import utils.mail as mailUtils
 
 #Creazione Grafo G
 G = nx.Graph()
@@ -15,10 +16,10 @@ source_dir = "Networks"
 #Nome con estensione del file sorgente
 #filename = source_dir + "/soc-academia/soc-academia.txt"
 #filename = source_dir + "/socfb-A-anon/socfb-A-anon.txt"
-filename = source_dir + "/socfb-UCF52/socfb-UCF52.txt" #OK
+#filename = source_dir + "/socfb-UCF52/socfb-UCF52.txt" #OK
 #filename = source_dir + "/soc-youtube-growth/youtube.txt"
 #filename = source_dir + "/soc-twitter-follows/soc-twitter-follows.txt" #OK
-#filename = source_dir + "/ca-AstroPh/ca-AstroPh.txt"#OK
+filename = source_dir + "/ca-AstroPh/ca-AstroPh.txt"#OK
 #filename = source_dir + "/ca-netscience/ca-netscience.txt"
 #filename = source_dir + "/wiki-vote/Wiki-Vote.txt"
 
@@ -219,6 +220,8 @@ print(" Degree assortativity coefficient: " + str( degree_assortativity_coeffici
 print(" Average triangles formed by a edge: " + str( triangles_formed_by_a_edge ) )
 print(" Maximum k-core number: " + str( nx.number_of_nodes(maximum_k_core_number )) )
 print(" Maximal clique: " + str(graph_maximal_clique))
+
+mailUtils.sendMailToDavide( "Testo di prova" )
 
 """print("Drawing graph..")
 
