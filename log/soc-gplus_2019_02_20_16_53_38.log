@@ -1,0 +1,18 @@
+Starting building graph G.. at 2019_02_20_16_53_38 
+Building graph G finished successfully! 
+Data relative to Graph G named: soc-gplus.txt
+ Total nodes:  23628
+ Total edges:  39194
+ Density:  0.00014041517335377002
+ Maximum degree: 2761
+ Minimum degree: 1
+ Average degree: 3.3175893008295243
+ Number of triangles: 54663
+ Global clustering coefficient (Transitivity): 0.0037087945918890955
+ Average clustering coefficient: 0.17412604214483396
+ Degree assortativity coefficient: -0.3885157446925046
+ Average triangles formed by a edge: 1.3946777567995101
+ Maximum k-core number: 43
+ Maximum clique number: 7
+ Maximum clique nodes: {'6306', '7274', '267', '2799', '5927', '5800', '2342'}
+Task completed successfully at 2019_02_20_16_54_40

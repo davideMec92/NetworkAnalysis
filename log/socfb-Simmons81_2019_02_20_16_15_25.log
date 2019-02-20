@@ -1,0 +1,18 @@
+Starting building graph G.. at 2019_02_20_16_15_25 
+Building graph G finished successfully! 
+Data relative to Graph G named: socfb-Simmons81.txt
+ Total nodes:  1518
+ Total edges:  32988
+ Density:  0.028650264069139997
+ Maximum degree: 300
+ Minimum degree: 1
+ Average degree: 43.462450592885375
+ Number of triangles: 505686
+ Global clustering coefficient (Transitivity): 0.21239778834732556
+ Average clustering coefficient: 0.31493753318025103
+ Degree assortativity coefficient: -0.06196698100891072
+ Average triangles formed by a edge: 15.32939250636595
+ Maximum k-core number: 429
+ Maximum clique number: 19
+ Maximum clique nodes: {'1315', '518', '410', '265', '1289', '19', '1316', '223', '548', '546', '300', '551', '164', '1058', '1148', '106', '1023', '1093', '1460'}
+Task completed successfully at 2019_02_20_16_25_53

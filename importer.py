@@ -19,16 +19,9 @@ output_log_dir = "log"
 now = strftime("%Y_%m_%d_%H_%M_%S", gmtime())
 
 #Nome con estensione del file sorgente
-#filename = source_dir + "/soc-academia/soc-academia.txt"
-#filename = source_dir + "/socfb-A-anon/socfb-A-anon.txt"
-filename = source_dir + "/socfb-UCF52/socfb-UCF52.txt" #OK
-#filename = source_dir + "/soc-youtube-growth/youtube.txt"
-
-#filename = source_dir + "/soc-twitter-follows/soc-twitter-follows.txt" #OK
-
-#filename = source_dir + "/ca-AstroPh/ca-AstroPh.txt"#OK
-#filename = source_dir + "/ca-netscience/ca-netscience.txt"
-#filename = source_dir + "/wiki-vote/Wiki-Vote.txt"
+#filename = source_dir + "/socfb-Simmons81/socfb-Simmons81.txt" #OK
+#filename = source_dir + "/ca-CondMat/ca-CondMat.txt" #OK
+filename = source_dir + "/soc-gplus/soc-gplus.txt" #OK
 
 #Separatore nodi file di input grafo G
 separator = " ";
@@ -85,32 +78,30 @@ output_file_log.write("Building graph G finished successfully! \n")
         
 print("Building graph finished successfully! \n")
 
-#'test' : source_dir + '/output'
-"""args = { 'path': filename, 'time' : 1000000, 'graph' : G }
-
-max_clique_algorithm.start_maximum_clique_calc( args )
-
-sys.exit("Uscita programmata")"""
-
 output_file_log.write("Data relative to Graph G named: " + str( os.path.basename( filename ) ) + "\n" )
 
 print("Data relative to Graph G named: " + str( os.path.basename( filename ) ) )
 
 #Ottengo numero totale nodi
+print( "Calculating number of nodes" )
 tot_nodes = G.number_of_nodes()
 
 #Ottengo numero totale connessioni
+print( "Calculating number of edges" )
 tot_edges = G.number_of_edges()
 
+
+print( "Calculating graph density.." )
 total_connections = ( tot_nodes * ( tot_nodes - 1 ) )/2
 
 #Ottengo densità Grafo G
 density = tot_edges/total_connections
 
 max_node_degree = None
+min_node_degree = None
 node_degree_sum = 0
 
-print("Calculating maximum degree..")
+print("Calculating maximum and minimum degree..")
 
 for node in G.nodes():
 
@@ -122,139 +113,88 @@ for node in G.nodes():
 
         node_degree_sum += tmp_degree
 
-        if( max_node_degree is None ):
+        if( max_node_degree is None ): #Inizializzazione variabili
             max_node_degree = tmp_degree
-        elif( tmp_degree > max_node_degree ):
+            min_node_degree = tmp_degree
+        elif( tmp_degree > max_node_degree ): #Confronto con massimo temporaneo
             max_node_degree = tmp_degree
             print("Found new maximum degree: " + str( tmp_degree ))
+        elif( tmp_degree < min_node_degree ): #Confronto con minimo temporaneo
+            min_node_degree = tmp_degree
+            print("Found new minimum degree: " + str( tmp_degree ))
 
-
+            
+#Calcolo grado medio nodi grafo G
+print("Calculating average degree..")
 average_degree = node_degree_sum/tot_nodes
+
+print("Calculating degree sequence.. ")
+degree_sequence = [d for n, d in G.degree()]
 
 tot_triangles = 0
 
-triangles_search_count = 1
-
-#Analizzo i nodi del Grafo G
-"""for node in G.nodes():
-
-    #Ottengo cliques nodo
-    node_cliques = nx.cliques_containing_node(G, node)
-
-    print("\nRicerca triangoli per nodo : " + str(node) + " - " + str( triangles_search_count ) + "/" + str( tot_nodes ) + " \n")
-
-    print("node_cliques: " + str( node_cliques ))
-
-    #Ricerca cliques per nodo analizzato
-    for i,j in node_cliques:
-
-        search_clique_node = None
-
-        if( i != node ):
-            search_clique_node = i
-        elif( j != node ):
-            search_clique_node = j
-
-        #print("Clique trovato i: " + str(i) + ", j: " + str(j) + "\n" )
-
-        #Ricerca di un eventuale edge tra i nodi connessi al nodo analizzato
-        for k,q in node_cliques:
-
-            #In caso di ricerca sullo stesso nodo passo al prossimo
-            if( k == search_clique_node or q == search_clique_node ):
-                continue
-
-            #print("Ricerca edge per nodo: " + str(search_clique_node) + "\n")
-
-            search_edge_node = None
-
-            if( k != node ):
-                search_edge_node = k
-            elif( q != node ):
-                search_edge_node = q
-
-            if( G.has_edge( search_clique_node, search_edge_node ) == True ):
-                print( "Trovato triangolo tra i vertici: " + str( node ) + ", " + str( search_clique_node ) + ", " + str( search_edge_node ) )
-                tot_triangles = tot_triangles + 1
-            #else:
-                #print( "Nessun edge presente tra: " + str( search_clique_node ) + ", " + str(search_edge_node) )
-
-    print("Triangoli totali trovati: " + str( tot_triangles ) )
-    triangles_search_count = triangles_search_count + 1"""
-
 print("Calculating total triangles..")
-#triangles_dict = nx.triangles( G )
-
-#print("dict: " + str(triangles_dict))
-
-"""for node in triangles_dict:
-    for n_triangles in node:
-        print("Nodo: " + str(node) + " - Triangoli: " + str(n_triangles))
-        tot_triangles += int(n_triangles)"""
-
-#tot_triangles = [c for c in nx.cycle_basis(G) if len(c)==3]
 
 for node in G.nodes():
     tot_triangles += nx.triangles(G,node)
 
-maximum_clique = None
-max_clique_len = 0
-
-for node in G.nodes():
-    tmp_maximum_clique = nx.number_of_cliques(G,node)
-
-    if tmp_maximum_clique != None and tmp_maximum_clique > max_clique_len:
-        max_clique_len = tmp_maximum_clique
-
-#print( "max_clique_len: " + str( max_clique_len ) )
-
-"""for node_key in triangles_dict:
-    print( "Entro qui" )
-    tot_triangles += triangles_dict[node_key]"""
-
-#A = nx.convert.to_dict_of_dicts( G )
-#B = nx.adjacency_matrix(G)
-#nx.write_adjlist(G,"test.adjlist")
-#print("adjacency_matrix: " + str(A))
-#f = open("adjacency_matrix.txt", "w")
-#f.write(str(A))
-
+print( "Calculating assortativity coefficient.. " )
 degree_assortativity_coefficient = nx.degree_assortativity_coefficient(G)
+
+print( "Calculating global clustering coefficient (Transitivity).. ")
+global_clustering_coefficient = nx.transitivity(G)
+
+print( "Calculating average clustering coefficient.. ")
 avg_clustering_coefficient = nx.average_clustering(G)
+
+print( "Calculating triangles formed by a edge..")
 triangles_formed_by_a_edge = tot_triangles/tot_edges
+
+print( "Calculating maximum k core number.. ")
 maximum_k_core_number = nx.k_core(G)
-graph_maximal_clique = nx.make_max_clique_graph(G)
+
+print( "Calculating maximum clique.." )
+args = { 'path': filename, 'time' : 100000000, 'graph' : G }
+maximum_clique = max_clique_algorithm.start_maximum_clique_calc( args )[0]
 
 print(" Total nodes:  " + str( tot_nodes ) )
 print(" Total edges:  " + str( tot_edges ) )
 print(" Density:  " + str( density ) )
 print(" Maximum degree: " + str( max_node_degree ) )
+print(" Minimum degree: " + str( min_node_degree ) )
 print(" Average degree: " + str( average_degree ) )
+print(" Degree sequence: " + str( degree_sequence ) )
 print(" Number of triangles: " + str( tot_triangles ) )
+print(" Global clustering coefficient (Transitivity): " + str( global_clustering_coefficient ) )
 print(" Average clustering coefficient: " + str( avg_clustering_coefficient ) )
 print(" Degree assortativity coefficient: " + str( degree_assortativity_coefficient ) )
 print(" Average triangles formed by a edge: " + str( triangles_formed_by_a_edge ) )
 print(" Maximum k-core number: " + str( nx.number_of_nodes(maximum_k_core_number )) )
-print(" Maximal clique: " + str(graph_maximal_clique))
+print(" Maximum clique number: " + str( len(maximum_clique) ) )
+print(" Maximum clique nodes: " + str( maximum_clique ) )
 
 #Write results to log file
 output_file_log.write(" Total nodes:  " + str( tot_nodes ) + "\n" )
 output_file_log.write(" Total edges:  " + str( tot_edges ) + "\n" )
 output_file_log.write(" Density:  " + str( density ) + "\n" )
 output_file_log.write(" Maximum degree: " + str( max_node_degree ) + "\n" )
+output_file_log.write(" Minimum degree: " + str( min_node_degree ) + "\n" )
 output_file_log.write(" Average degree: " + str( average_degree ) + "\n" )
+output_file_log.write(" Degree sequence: " + str( degree_sequence ) + "\n" )
 output_file_log.write(" Number of triangles: " + str( tot_triangles ) + "\n" )
+output_file_log.write(" Global clustering coefficient (Transitivity): " + str( global_clustering_coefficient ) + "\n" )
 output_file_log.write(" Average clustering coefficient: " + str( avg_clustering_coefficient ) + "\n" )
 output_file_log.write(" Degree assortativity coefficient: " + str( degree_assortativity_coefficient ) + "\n" )
 output_file_log.write(" Average triangles formed by a edge: " + str( triangles_formed_by_a_edge ) + "\n" )
 output_file_log.write(" Maximum k-core number: " + str( nx.number_of_nodes(maximum_k_core_number )) + "\n" )
-output_file_log.write(" Maximal clique: " + str(graph_maximal_clique) + "\n" )
+output_file_log.write(" Maximum clique number: " + str( len(maximum_clique) ) + "\n" )
+output_file_log.write(" Maximum clique nodes: " + str( maximum_clique ) + "\n" )
 
 now = strftime("%Y_%m_%d_%H_%M_%S", gmtime())
 
 output_file_log.write("Task completed successfully at " + str( now ) + "\n" )
 
-mailUtils.sendMailToDavide( "Testo di prova" )
+#mailUtils.sendMailToDavide( "Testo di prova" )
 
 """print("Drawing graph..")
 
