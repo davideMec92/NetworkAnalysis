@@ -1,12 +1,17 @@
 import networkx as nx
 import utils.file as uf
-#import matplotlib.pyplot as plt
 import os
 import re
 import sys
 import utils.main as max_clique_algorithm
 import utils.mail as mailUtils
 from time import gmtime, strftime
+import plotly
+import plotly.plotly as py
+import plotly.graph_objs as go
+
+#Autenticazione con il servizio plotly
+plotly.tools.set_credentials_file(username='tuamadre', api_key='bR4rv1Yzg7wBI6Ot2Jb7')
 
 #Creazione Grafo G
 G = nx.Graph()
@@ -25,13 +30,23 @@ filename = source_dir + "/soc-gplus/soc-gplus.txt" #OK
 
 #Separatore nodi file di input grafo G
 separator = " ";
-#separator = "	";
-#separator = ",";
 
 #Ottengo lunghezza file
 file_lenght = uf.file_len( filename )
 
-output_file_log = open( output_log_dir + "/" + str( os.path.basename( filename ).split(".")[0] + "_" + now + ".log" ), "w")
+output_dir = "output/" + str( os.path.basename( filename ).split(".")[0] )
+
+#Creazione directory di output risultati
+if not os.path.exists(output_dir + "/"):
+  os.makedirs(output_dir + "/")
+  
+#Creazione directory di output log
+if not os.path.exists(output_dir + "/" + output_log_dir + "/"):
+  os.makedirs(output_dir + "/" + output_log_dir + "/")
+
+output_file_log = open( output_dir + "/" + output_log_dir + "/" + str( os.path.basename( filename ).split(".")[0] + "_" + now + ".log" ), "w")
+output_csv_degree_sequence = open( output_dir + "/" + output_log_dir + "/" + str( os.path.basename( filename ).split(".")[0] + "_degree_sequence_" + now + ".csv" ), "w")
+output_csv_local_clustering_coefficient = open( output_dir + "/" + output_log_dir + "/" + str( os.path.basename( filename ).split(".")[0] + "_local_clustering_coefficient_" + now + ".csv" ), "w")
 
 reading_line = 1
 progress = ""
@@ -67,9 +82,6 @@ with open(filename) as f:
             if( G.has_edge( node_i, node_j ) == False ):
                 edge = (node_i, node_j)
                 G.add_edge( *edge )
-
-            #print( "Nodo 1: " + str(nodes[0]) + "\n")
-            #print( "Nodo 2: " + str(nodes[1]) + "\n")
 
         reading_line = reading_line + 1
 
@@ -118,10 +130,8 @@ for node in G.nodes():
             min_node_degree = tmp_degree
         elif( tmp_degree > max_node_degree ): #Confronto con massimo temporaneo
             max_node_degree = tmp_degree
-            print("Found new maximum degree: " + str( tmp_degree ))
         elif( tmp_degree < min_node_degree ): #Confronto con minimo temporaneo
             min_node_degree = tmp_degree
-            print("Found new minimum degree: " + str( tmp_degree ))
 
             
 #Calcolo grado medio nodi grafo G
@@ -129,7 +139,14 @@ print("Calculating average degree..")
 average_degree = node_degree_sum/tot_nodes
 
 print("Calculating degree sequence.. ")
-degree_sequence = [d for n, d in G.degree()]
+
+degree_sequence = {}
+
+for node in G.nodes():
+  degree_sequence[node] = G.degree[ node ]
+
+#Riordino gradi nodi dal maggiore al minore, come da definizione di degree sequence
+sorted_degree_sequence = sorted( degree_sequence.items(), key=lambda x: x[1] )
 
 tot_triangles = 0
 
@@ -144,6 +161,12 @@ degree_assortativity_coefficient = nx.degree_assortativity_coefficient(G)
 print( "Calculating global clustering coefficient (Transitivity).. ")
 global_clustering_coefficient = nx.transitivity(G)
 
+print( "Calculating local clustering coefficient.. ")
+local_clustering_coefficient = {}
+
+for node in G.nodes():
+  local_clustering_coefficient[node] = nx.clustering(G,node)
+  
 print( "Calculating average clustering coefficient.. ")
 avg_clustering_coefficient = nx.average_clustering(G)
 
@@ -183,6 +206,7 @@ output_file_log.write(" Average degree: " + str( average_degree ) + "\n" )
 output_file_log.write(" Degree sequence: " + str( degree_sequence ) + "\n" )
 output_file_log.write(" Number of triangles: " + str( tot_triangles ) + "\n" )
 output_file_log.write(" Global clustering coefficient (Transitivity): " + str( global_clustering_coefficient ) + "\n" )
+output_file_log.write(" Local clustering coefficient : " + str( local_clustering_coefficient ) + "\n" )
 output_file_log.write(" Average clustering coefficient: " + str( avg_clustering_coefficient ) + "\n" )
 output_file_log.write(" Degree assortativity coefficient: " + str( degree_assortativity_coefficient ) + "\n" )
 output_file_log.write(" Average triangles formed by a edge: " + str( triangles_formed_by_a_edge ) + "\n" )
@@ -190,15 +214,106 @@ output_file_log.write(" Maximum k-core number: " + str( nx.number_of_nodes(maxim
 output_file_log.write(" Maximum clique number: " + str( len(maximum_clique) ) + "\n" )
 output_file_log.write(" Maximum clique nodes: " + str( maximum_clique ) + "\n" )
 
+output_csv_local_clustering_coefficient.write("Node, Local Clustering Coefficient \n")
+                 
+local_cluestering_plot_x = []
+local_cluestering_plot_y = []
+                 
+for key, value in local_clustering_coefficient.items():
+  local_cluestering_plot_x.append( key )
+  local_cluestering_plot_y.append( value )
+  output_csv_local_clustering_coefficient.write(str(key) + "," + str(value) + "\n")
+  
+trace1 = {"x": local_cluestering_plot_x, 
+          "y": local_cluestering_plot_y, 
+          "marker": {"color": "blue", "size": 12}, 
+          "mode": "markers", 
+          "name": "Local Clustering", 
+          "type": "scatter"
+}
+
+data = [trace1]
+layout = {"title": "Local Clustering Coefficient - " + str( os.path.basename( filename ).split(".")[0] ), 
+          "xaxis": {"title": "Nodes"}, 
+          "yaxis": {"title": "Local Clustering Coefficient"}}
+
+fig = go.Figure(data=data, layout=layout)
+py.plot(fig, filename = str( os.path.basename( filename ).split(".")[0] + "_local_clustering_coefficient") )
+                 
+output_csv_degree_sequence.write("Node, Degree \n")
+
+for key, value in degree_sequence.items():
+  output_csv_degree_sequence.write(str(key) + "," + str(value) + "\n")
+  
+degree_sequence_plot_x = []
+degree_sequence_plot_y = []
+
+degree_distribution_plot_x = []
+degree_distribution_plot_y = []
+
+cont = 0
+
+k_degree = min_node_degree
+n_k_nodes = 0
+
+for degree in sorted_degree_sequence:
+  
+  degree_sequence_plot_x.append( cont )
+  degree_sequence_plot_y.append( degree[1] )
+  
+  #Incremento numeri nodi con grado uguale a k
+  if( k_degree == degree[1] ):
+    n_k_nodes = n_k_nodes + 1
+  elif( degree[1] > k_degree ): #Caso in cui il grado attuale sia stato superato, memorizzo e aggiorno variabili k_degree
+    
+    #Calcolo probabilità P(k)
+    p_k = n_k_nodes/tot_nodes
+    
+    #Inserisco variabili in array per grafico
+    degree_distribution_plot_x.append( k_degree )
+    degree_distribution_plot_y.append( p_k )
+    
+    #Aggiorno varibiale grado k
+    k_degree = degree[1]
+    
+    #Resetto count nodi con k_degree
+    n_k_nodes = 0
+  
+  cont = cont + 1
+
+# Create a trace
+trace = go.Scatter(
+    x = degree_sequence_plot_x,
+    y = degree_sequence_plot_y
+)
+
+data = [trace]
+
+layout = {"title": "Degree sequence - " + str( os.path.basename( filename ).split(".")[0] ), 
+          "xaxis": {"title": "Sequence"}, 
+          "yaxis": {"title": "Node Degree"}}
+
+fig = go.Figure(data=data, layout=layout)
+
+py.plot(data, filename = str( os.path.basename( filename ).split(".")[0] + "_degree_sequence") )
+
+
+# Create a trace
+trace = go.Bar(
+    x = degree_distribution_plot_x,
+    y = degree_distribution_plot_y
+)
+
+data = [trace]
+
+layout = {"title": "Degree distribution - " + str( os.path.basename( filename ).split(".")[0] ), 
+          "xaxis": {"title": "Node Degree"}, 
+          "yaxis": {"title": "P(k)"}}
+
+fig = go.Figure(data=data, layout=layout)
+
+py.plot(data, filename = str( os.path.basename( filename ).split(".")[0] + "_degree_distribution") )
+
 now = strftime("%Y_%m_%d_%H_%M_%S", gmtime())
 
 output_file_log.write("Task completed successfully at " + str( now ) + "\n" )
-
-#mailUtils.sendMailToDavide( "Testo di prova" )
-
-"""print("Drawing graph..")
-
-# Need to create a layout when doing
-# separate calls to draw nodes and edges
-nx.draw(G)
-plt.show()"""
