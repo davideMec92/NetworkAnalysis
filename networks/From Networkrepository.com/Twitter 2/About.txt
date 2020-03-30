@@ -1,0 +1,37 @@
+Nodes	761
+Edges	1K
+Density	0.00355834
+Maximum degree	37
+Minimum degree	1
+Average degree	2
+Assortativity	-0.0992231
+Number of triangles	447
+Average number of triangles	0
+Maximum number of triangles	27
+Average clustering coefficient	0.07588
+Fraction of closed triangles	0.0601939
+Maximum k-core	5
+Lower bound of Maximum Clique	4
+
+Short	Twitter retweet/mention network
+Vertex type	User
+Edge type	Retweet/mention
+Description	This is a retweet and mentions network from the UN conference held in Copenhagen. The data was collected over a two week period.
+
+Maximum clique ({'56', '409', '378', '610'}, '517.030 ms') 
+len: 2
+ Total nodes:  761
+ Total edges:  1029
+ Density:  0.003558337367729442
+ Maximum degree: 37
+ Minimum degree: 1
+ Average degree: 2.704336399474376
+ Degree sequence: {..}
+ Number of triangles: 447
+ Global clustering coefficient (Transitivity): 0.06019391327767304
+ Average clustering coefficient: 0.07588001028319721
+ Degree assortativity coefficient: -0.09922311792436746
+ Average triangles formed by a edge: 0.43440233236151604
+ Maximum k-core number: 21
+ Maximum clique number: 4
+ Maximum clique nodes: {'56', '409', '378', '610'}

@@ -1,26 +1,50 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""
+Il seguente script è stato realizzato a scopo universitario da:
+
+Davide Nunzio Maccarrone davidemaccarrone@studio.unibo.it
+Bruno Quintero Panaero bruno.quinteropanaro@studio.unibo.it
+
+"""
+
 import networkx as nx
-import utils.file as uf
 import os
 import re
 import sys
-import utils.main as max_clique_algorithm
-import utils.mail as mailUtils
+
+import utils.file_manager as uf
+import utils.maximum_clique_algorithm as max_clique_algorithm
 from time import gmtime, strftime
 
-#Creazione Grafo G
+#Inizializzazione Grafo G
 G = nx.Graph()
 
-#Directory database grafi
+#Directory dataset grafi
 source_dir = "networks"
 
 output_log_dir = "log"
 
+#Separatore nodi file sorgente di input grafo G
+separator = " ";
+
+#Ottenimento parametri digitati dall'utente
+argument_data = sys.argv
+
+if len( argument_data ) <= 1:
+    print('Filename argument cannot be null')
+    sys.exit(0)
+
 now = strftime("%Y_%m_%d_%H_%M_%S", gmtime())
 
-filename = source_dir + "/soc-gplus/soc-gplus.txt" #OK
+filename = source_dir + "/" + argument_data[1]
 
-#Separatore nodi file di input grafo G
-separator = " ";
+try:
+    f = open(filename)
+except EnvironmentError:
+    print('Filename: ' + str( argument_data[1] ) + 'not exists in ' + str(source_dir) + ' directory')
+    sys.exit(0)
 
 #Ottengo lunghezza file
 file_lenght = uf.file_len( filename )
@@ -41,6 +65,7 @@ reading_line = 1
 progress = ""
 
 output_file_log.write( "Starting building graph G.. at " + str( now ) + " \n" )
+
 
 #Lettura file sorgente
 with open(filename) as f:
@@ -73,7 +98,6 @@ with open(filename) as f:
                 G.add_edge( *edge )
 
         reading_line = reading_line + 1
-
 
 output_file_log.write("Building graph G finished successfully! \n")
 

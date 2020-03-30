@@ -1,0 +1,20 @@
+Nodes	96
+Edges	117
+Density	0.0256579
+Maximum degree	17
+Minimum degree	1
+Average degree	2
+Assortativity	-0.17917
+Number of triangles	36
+Average number of triangles	0
+Maximum number of triangles	6
+Average clustering coefficient	0.06075
+Fraction of closed triangles	0.0742268
+Maximum k-core	4
+Lower bound of Maximum Clique	4
+
+Short	Twitter retweet network
+Vertex type	User
+Edge type	Retweet
+Edge weights	Unweighted
+Description	Nodes are twitter users and edges are retweets. These were collected from various social and political hashtags.

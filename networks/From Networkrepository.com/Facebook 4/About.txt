@@ -1,0 +1,21 @@
+Nodes	962
+Edges	18.8K
+Density	0.0406974
+Maximum degree	313
+Minimum degree	1
+Average degree	39
+Assortativity	0.0234339
+Number of triangles	291.4K
+Average number of triangles	302
+Maximum number of triangles	4.2K
+Average clustering coefficient	0.31836
+Fraction of closed triangles	0.220706
+Maximum k-core	35
+Lower bound of Maximum Clique	10
+
+Short	Facebook social network
+Vertex type	Person
+Edge type	Friendship, social relationship
+Format	Undirected
+Edge weights	Unweighted
+Description	A social friendship network extracted from Facebook consisting of people (nodes) with edges representing friendship ties.

@@ -1,0 +1,21 @@
+Nodes	5.2K
+Edges	14.5K
+Density	0.0010544
+Maximum degree	81
+Minimum degree	0
+Average degree	5
+Assortativity	0.659325
+Number of triangles	144.8K
+Average number of triangles	27
+Maximum number of triangles	1.2K
+Average clustering coefficient	0.529636
+Fraction of closed triangles	0.629842
+Maximum k-core	44
+Lower bound of Maximum Clique	44
+
+
+Author	J. Leskovec, J. Kleinberg and C. Faloutsos
+Date	2003
+Edge weights	Unweighted
+Metadata	undirected graph
+Description	Collaboration network of Arxiv General Relativit
