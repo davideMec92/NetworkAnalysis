@@ -41,7 +41,7 @@ Nota: In molti casi, l'installazione delle librerie e/o pacchetti necessari, pu�
 ## Utilizzo
 Il software è facilmente eseguibile mediante il comando:
 <pre><code><b>#Indicare come argomento il nome del file (con relativa estensione) contenente il dataset da analizzare</b>
-python3 graph_analizer.py <nome_file.estensione></code></pre>
+python3 graph_analizer.py nome_file.estensione </code></pre>
 
 I file contenenti i dataset vanno collocati all'interno della directory <b>networks/</b>. Successivamente, dopo avere analizzato il grafo, lo script produrrà un file all'interno della directory <b>output</b> recante il nome del file indicato in input.
 
