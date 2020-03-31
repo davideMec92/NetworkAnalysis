@@ -47,9 +47,7 @@ I file contenenti i dataset vanno collocati all'interno della directory <b>netwo
 
 Nella cartella <b>networks</b> sono presenti esempi di dataset di grafi.
 Ad esempio supponendo di volere eseguire lo studio del dataset il cui file è denominato <i>ca-GrQc.txt</i> bastera eseguire:
-<pre><code>
-python3 graph_analizer.py ca-GrQc.txt
-</code></pre>
+<pre><code>python3 graph_analizer.py ca-GrQc.txt</code></pre>
 
 ##Credits
 Lo script è liberamente utilizzabile, è stato realizzato per scopi didattici da:
