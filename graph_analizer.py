@@ -46,8 +46,6 @@ except EnvironmentError:
     print('Filename: ' + str( argument_data[1] ) + 'not exists in ' + str(source_dir) + ' directory')
     sys.exit(0)
 
-result_dict = {}
-
 #Ottengo lunghezza file
 file_length = uf.file_len( filename )
 
@@ -102,14 +100,12 @@ print("Building graph finished successfully! \n")
 
 output_file_log.write("Data relative to Graph G named: " + str( os.path.basename( filename ) ) + "\n" )
 
-print("Data relative to Graph G named: " + str( os.path.basename( filename ) ) )
-
 #Ottengo numero totale nodi
-print( "Calculating number of nodes" )
+print( "Calculating number of nodes.." )
 tot_nodes = G.number_of_nodes()
 
 #Ottengo numero totale connessioni
-print( "Calculating number of edges" )
+print( "Calculating number of edges.." )
 tot_edges = G.number_of_edges()
 
 print( "Calculating graph density.." )
