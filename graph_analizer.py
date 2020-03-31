@@ -26,7 +26,7 @@ source_dir = "networks"
 
 output_log_dir = "log"
 
-#Separatore nodi file sorgente di input grafo G
+#Separatore nodi file sorgente di input grafo G, modificare se separatore è differente da quello di default
 separator = " ";
 
 #Ottenimento parametri digitati dall'utente
@@ -46,8 +46,10 @@ except EnvironmentError:
     print('Filename: ' + str( argument_data[1] ) + 'not exists in ' + str(source_dir) + ' directory')
     sys.exit(0)
 
+result_dict = {}
+
 #Ottengo lunghezza file
-file_lenght = uf.file_len( filename )
+file_length = uf.file_len( filename )
 
 output_dir = "output/" + str( os.path.basename( filename ).split(".")[0] )
 
@@ -64,18 +66,15 @@ output_file_log = open( output_dir + "/" + output_log_dir + "/" + str( os.path.b
 reading_line = 1
 progress = ""
 
-output_file_log.write( "Starting building graph G.. at " + str( now ) + " \n" )
-
-
 #Lettura file sorgente
 with open(filename) as f:
 
     for line in f:
 
         # Get reading progress percentage
-        progress_percentage = (100 * reading_line)/file_lenght
+        progress_percentage = (100 * reading_line)/file_length
 
-        print("Progress: " + str(progress) + " " + str( reading_line ) + "/" + str(file_lenght) + " " + str(int(progress_percentage)) + "%")
+        print("Progress: " + str(progress) + " " + str( reading_line ) + "/" + str(file_length) + " " + str(int(progress_percentage)) + "%")
 
         if line[0] != "#":
 
@@ -98,8 +97,6 @@ with open(filename) as f:
                 G.add_edge( *edge )
 
         reading_line = reading_line + 1
-
-output_file_log.write("Building graph G finished successfully! \n")
 
 print("Building graph finished successfully! \n")
 
@@ -219,14 +216,10 @@ output_file_log.write(" Minimum degree: " + str( min_node_degree ) + "\n" )
 output_file_log.write(" Average degree: " + str( average_degree ) + "\n" )
 output_file_log.write(" Number of triangles: " + str( tot_triangles ) + "\n" )
 output_file_log.write(" Global clustering coefficient (Transitivity): " + str( global_clustering_coefficient ) + "\n" )
-output_file_log.write(" Local clustering coefficient : " + str( local_clustering_coefficient ) + "\n" )
+output_file_log.write(" Local clustering coefficient by node: " + str( local_clustering_coefficient ) + "\n" )
 output_file_log.write(" Average clustering coefficient: " + str( avg_clustering_coefficient ) + "\n" )
 output_file_log.write(" Degree assortativity coefficient: " + str( degree_assortativity_coefficient ) + "\n" )
 output_file_log.write(" Average triangles formed by a edge: " + str( triangles_formed_by_a_edge ) + "\n" )
 output_file_log.write(" Maximum k-core number: " + str( maximum_k_core_number ) + "\n" )
 output_file_log.write(" Maximum clique number: " + str( len(maximum_clique) ) + "\n" )
 output_file_log.write(" Maximum clique nodes: " + str( maximum_clique ) + "\n" )
-
-now = strftime("%Y_%m_%d_%H_%M_%S", gmtime())
-
-output_file_log.write("Task completed successfully at " + str( now ) + "\n" )
