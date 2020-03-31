@@ -35,8 +35,8 @@ Nota: In molti casi, l'installazione delle librerie e/o pacchetti necessari, pu√
     pip3 install networkx</code></pre>
 
 - **Numpy**
- <pre><code><b>#Installazione mediante pip3</b>
-  pip3 install numpy</code></pre>
+    <pre><code><b>#Installazione mediante pip3</b>
+    pip3 install numpy</code></pre>
 
 ## Utilizzo
 Il software √® facilmente eseguibile mediante il comando:
