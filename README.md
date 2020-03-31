@@ -3,6 +3,7 @@
 Il presente software è stato realizzato, in linguaggio **Python**, per il calcolo di specifici valori su grafi.
 
 Nello specifico i valori calcolati sono:
+
 - Numero totale di nodi
 - Numero totale di archi
 - Densità
@@ -19,30 +20,33 @@ Nello specifico i valori calcolati sono:
 
 ## Prerequisiti
 
-Per il corretto funzionamento dello script è necessario avere **Python ver 3.* ** e installare i seguenti pacchetti e/o librerie:
+Per il corretto funzionamento dello script è necessario avere <b>Python ver 3.* </b> e installare i seguenti pacchetti e/o librerie:
 
-In molti casi, l'installazione delle librerie e/o pacchetti necessari, può essere resa molto semplice utilizzando lo strumento **pip** di Python
+Nota: In molti casi, l'installazione delle librerie e/o pacchetti necessari, può essere resa molto semplice utilizzando lo strumento **pip** di Python
 
-  #Esempio di installazione su ambiente Linux utilizzando il gestore pacchetti apt (Versione per Python 3)
-  sudo apt-get install python3-pip
+ <pre><code><b>#Esempio di installazione su ambiente Linux utilizzando il gestore pacchetti apt (Versione per Python 3)</b>
+ sudo apt-get install python3-pip</code></pre>
+
 
 
 - **NetworkX** ( https://networkx.github.io/ )
 
-  #Installazione mediante pip3
-  pip3 install networkx
+    <pre><code><b>#Installazione mediante pip3</b>
+    pip3 install networkx</code></pre>
 
 - **Numpy**
+ <pre><code><b>#Installazione mediante pip3</b>
+  pip3 install numpy</code></pre>
 
-```bash
-#Installazione mediante pip3
-pip3 install numpy
-```
 ## Utilizzo
 Il software è facilmente eseguibile mediante il comando:
-```bash
-#Indicare come argomento il nome del file (con relativa estensione) contenente il dataset da analizzare
-python3 graph_analizer.py <nome_file.estensione>
-```
+<pre><code><b>#Indicare come argomento il nome del file (con relativa estensione) contenente il dataset da analizzare</b>
+python3 graph_analizer.py <nome_file.estensione></code></pre>
 
-I file contenti il dataset vanno collocati all'interno della directory ***networks/***. Successivamente, dopo avere analizzato il grafo, lo script produrrà un file all'interno della directory ***output/*** recante il nome del file indicato in input.
+I file contenenti i dataset vanno collocati all'interno della directory <b>networks/</b>. Successivamente, dopo avere analizzato il grafo, lo script produrrà un file all'interno della directory <b>output</b> recante il nome del file indicato in input.
+
+##Credits
+Lo script è liberamente utilizzabile, è stato realizzato per scopi didattici da:
+
+<i>Davide Nunzio Maccarrone</i>  <b>davidemaccarrone@studio.unibo.it</b>
+<i>Bruno Quintero Panaro</i> <b>bruno.quinteropanaro@studio.unibo.it</b>
