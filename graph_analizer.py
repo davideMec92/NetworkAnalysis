@@ -27,7 +27,7 @@ source_dir = "networks"
 output_log_dir = "log"
 
 #Separatore nodi file sorgente di input grafo G, modificare se separatore è differente da quello di default
-separator = " ";
+separator = " "
 
 #Ottenimento parametri digitati dall'utente
 argument_data = sys.argv
