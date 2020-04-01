@@ -43,7 +43,7 @@ filename = source_dir + "/" + argument_data[1]
 try:
     f = open(filename)
 except EnvironmentError:
-    print('Filename: ' + str( argument_data[1] ) + 'not exists in ' + str(source_dir) + ' directory')
+    print('Filename: ' + str( argument_data[1] ) + ' not exists in ' + str(source_dir) + ' directory')
     sys.exit(0)
 
 #Ottengo lunghezza file
