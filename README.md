@@ -48,7 +48,7 @@ python3 graph_analizer.py nome_file.estensione </code></pre>
 I file contenenti i dataset vanno collocati all'interno della directory <b>networks/</b>. Successivamente, dopo avere analizzato il grafo, lo script produrrà un file all'interno della directory <b>output/</b> recante il nome del file indicato in input.
 
 Nella cartella <b>networks</b> sono presenti esempi di dataset di grafi.
-Ad esempio supponendo di volere eseguire lo studio del dataset il cui file è denominato <i>ca-GrQc.txt</i> bastera eseguire:
+Ad esempio supponendo di volere eseguire lo studio del dataset il cui file è denominato <i>ca-GrQc.txt</i> basterà eseguire:
 <pre><code>python3 graph_analizer.py ca-GrQc.txt</code></pre>
 
 ## Troubleshooting
