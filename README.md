@@ -16,7 +16,7 @@ Nello specifico i valori calcolati sono:
 - Grado di assortatività
 - Numero medio di triangoli formati da un arco
 - K-core massimo
-- Calcolo della cricca massimale (Maximum clique). Per il calcolo di sub-grafo rappresentante la cricca massimale lo script realizzato utilizza la seguente libreria https://github.com/donfaq/max_clique
+- Calcolo della cricca massimale (Maximum clique). Per il calcolo del sub-grafo rappresentante la cricca massimale lo script realizzato utilizza la seguente libreria https://github.com/donfaq/max_clique
 - Elenco dei nodi appartenenti al subgrafo di G rappresentante la cricca massimale
 - Elenco dei valori del local clustering coefficient per ogni singolo nodo di G
 
